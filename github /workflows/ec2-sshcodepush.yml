@@ -1,1 +1,29 @@
 
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main # Change this to your branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install SSH key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY_OPENSSH }}" > ~/.ssh/server.pem
+          chmod 600 ~/.ssh/your_key.pem
+
+      - name: Add EC2 instance SSH key
+        run: ssh-keyscan -H 34.227.205.70 >> ~/.ssh/known_hosts
+
+      - name: Deploy code to EC2
+        run: |
+          rsync -r --delete-after --quiet $GITHUB_WORKSPACE/ ubuntu@34.227.205.70:/var/www/html/
+        env:
+          PRIVATE_KEY: ~/.ssh/yserver.pem
