@@ -16,14 +16,14 @@ jobs:
 
       - name: Install SSH key
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY_OPENSSH }}" > /ssh/server.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY_OPENSSH }}" > ~/ssh/server.pem
           chmod 600 ~/.ssh/server.pem
 
       - name: Add EC2 instance SSH key
-        run: ssh-keyscan -H 34.227.205.70 >> /ssh/known_hosts
+        run: ssh-keyscan -H 34.227.205.70 >> ~/ssh/known_hosts
 
       - name: Deploy code to EC2
         run: |
           rsync -r --delete-after --quiet $GITHUB_WORKSPACE/ ubuntu@34.227.205.70:/var/www/html/
         env:
-          PRIVATE_KEY: /ssh/server.pem
+          PRIVATE_KEY: ~/ssh/server.pem
