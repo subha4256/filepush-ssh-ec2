@@ -17,7 +17,7 @@ jobs:
       - name: Install SSH key
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY_OPENSSH }}" > ~/.ssh/server.pem
-          chmod 600 ~/.ssh/your_key.pem
+          chmod 600 ~/.ssh/server.pem
 
       - name: Add EC2 instance SSH key
         run: ssh-keyscan -H 34.227.205.70 >> ~/.ssh/known_hosts
